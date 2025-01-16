@@ -1,10 +1,13 @@
 <script setup lang="ts">
-defineProps<{
-     x: number
-    y: number,
-    z: number,
-    value: number
-}>()
+    defineProps < {
+        x: number
+        y: number,
+        z: number,
+        value: number
+    } > ();
+
+    const tileSize: string = "70px";
+
 </script>
 
 <template>
@@ -20,8 +23,8 @@ defineProps<{
         border: 1px solid #fff;
         color: #fff;
         font-size: 35px;
-        width: 70px;
-        height: 70px;
+        width: v-bind(tileSize);
+        height: v-bind(tileSize);
 
 
         display: flex;
