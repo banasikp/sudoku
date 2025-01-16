@@ -1,5 +1,4 @@
 <script setup lang="ts">
-    import { Y } from '../../node_modules/vitest/dist/chunks/reporters.D7Jzd9GS';
     import tile from '../components/tile.vue';
     //import TileItem from '@/models/tileItem.ts';
     const size: number = 2;
