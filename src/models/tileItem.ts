@@ -4,3 +4,7 @@ type TileItem = {
   z: number;
   value: number;
 }
+
+export type {
+  TileItem
+}
