@@ -24,7 +24,6 @@
     }
   });
 
-
   const tileSize: string = "70px";
 
   const classes = computed(() => "tile" + " " + props.customClass);
