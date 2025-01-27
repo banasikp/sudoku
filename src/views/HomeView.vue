@@ -20,6 +20,12 @@
   const fill = () => {
     store.fillWherePossible();
   }
+  const solve = () => {
+    store.solve();
+  }
+  const reset = () => {
+    store.initialize(size);
+  }
 </script>
 
 <template>
@@ -35,7 +41,11 @@
     </div>
 
     <div class="controls">
-      <button class="btn" @click="fill">Fill where possible</button>
+        <button class="btn" @click="fill">Fill where possible</button>
+        <br />
+        <button class="btn" @click="solve">Solve</button>
+        <br /><br />
+        <button class="btn" @click="reset">Reset</button>
     </div>
   </div>
 </template>

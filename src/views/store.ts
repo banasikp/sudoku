@@ -7,14 +7,7 @@ export const useSudokuStore = defineStore('sudoku', () => {
   const items = reactive<TileItem[]>([])
 
   const initialize = (size: number) => {
-    if (size == 2) {
-      items.push({ x: 0, y: 0, z: 0, value: 2 })
-      items.push({ x: 0, y: 1, z: 0, value: 1 })
-      items.push({ x: 1, y: 0, z: 0, value: 1 })
-      items.push({ x: 1, y: 1, z: 0, value: 2 })
-
-    }
-
+    items.splice(0);
 
     if (size == 9) {
       items.push({ x: 0, y: 0, z: 0, value: null })
@@ -33,8 +26,8 @@ export const useSudokuStore = defineStore('sudoku', () => {
       items.push({ x: 1, y: 3, z: 1, value: null })
       items.push({ x: 1, y: 4, z: 1, value: null })
       items.push({ x: 1, y: 5, z: 1, value: 1 })
-      items.push({ x: 1, y: 6, z: 2, value: null})
-      items.push({ x: 1, y: 7, z: 2, value: null})
+      items.push({ x: 1, y: 6, z: 2, value: null })
+      items.push({ x: 1, y: 7, z: 2, value: null })
       items.push({ x: 1, y: 8, z: 2, value: null })
 
       items.push({ x: 2, y: 0, z: 0, value: null })
@@ -87,7 +80,7 @@ export const useSudokuStore = defineStore('sudoku', () => {
       items.push({ x: 6, y: 7, z: 8, value: null })
       items.push({ x: 6, y: 8, z: 8, value: 7 })
 
-      items.push({ x: 7, y: 0, z: 6, value: 0 })
+      items.push({ x: 7, y: 0, z: 6, value: null })
       items.push({ x: 7, y: 1, z: 6, value: 2 })
       items.push({ x: 7, y: 2, z: 6, value: 7 })
       items.push({ x: 7, y: 3, z: 7, value: null })
@@ -112,16 +105,35 @@ export const useSudokuStore = defineStore('sudoku', () => {
   const getMapSize = () => mapSize;
   const getItems = () => items;
   const fillWherePossible = () => {
-    console.log('fillWherePossible');
+    const emptyItems = items.filter(item => item.value == null);
 
-    //todo: kontynuowac: sprawdzic wiersz, kolumne, kwadrat
+    emptyItems.forEach((item) => {
+      function getPossibleValues(items: TileItem[]) {
+        const values = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        const itemValues = items.map(i => i.value).filter(v => v != null);
+        return values.filter(v => !itemValues.includes(v));
+      }
 
+      const itemsToCheck = items.filter(i => i.x == item.x || i.y == item.y || i.z == item.z);
+      const possibleValues = getPossibleValues(itemsToCheck);      
+
+      if (possibleValues.length == 1) {        
+        item.value = possibleValues[0];
+      } 
+    })    
   }
+  const solve = () => {
+    while (items.filter(i => i.value == null).length > 0) {
+      fillWherePossible();
+    }
+  }
+  
 
   return {
     initialize,
     getItems,
     getMapSize,
-    fillWherePossible
+    fillWherePossible,
+    solve    
   }
 })
