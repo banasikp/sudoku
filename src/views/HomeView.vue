@@ -26,6 +26,10 @@
   const reset = () => {
     store.initialize(size);
   }
+
+  const toggleEdit = () => {
+    store.toggleEdit();
+  }
 </script>
 
 <template>
@@ -37,6 +41,7 @@
             :y="item.y"
             :z="item.z"
             :value="item.value"
+            :mode="store.getMode().value"
             :customClass="calculateCustomClass(item)" />
     </div>
 
@@ -46,6 +51,8 @@
         <button class="btn" @click="solve">Solve</button>
         <br /><br />
         <button class="btn" @click="reset">Reset</button>
+        <br />
+        <button class="btn" @click="toggleEdit">Edit/Play</button>
     </div>
   </div>
 </template>
@@ -73,11 +80,11 @@
     width: v-bind(mapSize);
   }
 
-    #sudoku-container .border-right {
-      border-right: 5px solid #fff
+    #sudoku-container .map .border-right {
+      border-right: 5px solid #fff !important
     }
 
     #sudoku-container .border-bottom {
-      border-bottom: 5px solid #fff
+      border-bottom: 5px solid #fff !important
     }
 </style>

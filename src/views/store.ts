@@ -1,10 +1,12 @@
 import { defineStore } from "pinia"
 import { ref, reactive } from "vue"
 import type { TileItem } from "@/models/tileItem.ts"
+import { TileMode }  from "@/models/tileMode.ts"
 
 export const useSudokuStore = defineStore('sudoku', () => {
   const mapSize = ref<number>(9);
   const items = reactive<TileItem[]>([])
+  const mode: TileMode = ref<TileMode>(TileMode.Play);
 
   const initialize = (size: number) => {
     items.splice(0);
@@ -127,13 +129,16 @@ export const useSudokuStore = defineStore('sudoku', () => {
       fillWherePossible();
     }
   }
-  
+  const getMode = () => mode;
+  const toggleEdit = () => { mode.value = mode.value == TileMode.Play ? TileMode.Edit : TileMode.Play; }
 
   return {
     initialize,
     getItems,
     getMapSize,
     fillWherePossible,
-    solve    
+    solve,
+    getMode,
+    toggleEdit
   }
 })
