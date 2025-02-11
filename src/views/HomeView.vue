@@ -8,7 +8,7 @@
   const mapSize: string = (size * tileSize) + "px";
 
   const store = useSudokuStore();
-  store.initialize(size);
+  store.initialize(size, 2);
   const items = store.getItems();
 
   const calculateCustomClass = (item: TileItem) => {
@@ -24,7 +24,11 @@
     store.solve();
   }
   const reset = () => {
-    store.initialize(size);
+    store.initialize(size, 1);
+  }
+
+  const clear = () => {
+    store.clear();
   }
 
   const toggleEdit = () => {
@@ -46,13 +50,15 @@
     </div>
 
     <div class="controls">
-        <button class="btn" @click="fill">Fill where possible</button>
-        <br />
-        <button class="btn" @click="solve">Solve</button>
-        <br /><br />
-        <button class="btn" @click="reset">Reset</button>
-        <br />
-        <button class="btn" @click="toggleEdit">Edit/Play</button>
+      <button class="btn" @click="fill">Fill where possible</button>
+      <br />
+      <button class="btn" @click="solve">Solve</button>
+      <br /><br />
+      <button class="btn" @click="reset">Reset to default map</button>
+      <br />
+      <button class="btn" @click="clear">Clear map</button>
+      <br />
+      <button class="btn" @click="toggleEdit">Edit/Play</button>
     </div>
   </div>
 </template>
@@ -80,11 +86,11 @@
     width: v-bind(mapSize);
   }
 
-    #sudoku-container .map .border-right {
+    #sudoku-container .map ::deep(div) {
       border-right: 5px solid #fff !important
     }
 
-    #sudoku-container .border-bottom {
+    #sudoku-container .map ::deep(.border-bottom) {
       border-bottom: 5px solid #fff !important
     }
 </style>

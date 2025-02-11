@@ -3,6 +3,8 @@ type TileItem = {
   y: number;
   z: number;
   value: number | null;
+
+  possibleValues: number[];
 }
 
 
