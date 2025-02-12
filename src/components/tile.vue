@@ -3,8 +3,6 @@
   import { TileMode } from '@/models/tileMode.ts';
   import { useSudokuStore } from '@/views/store';
 
-
-
   const props = defineProps({
     x: {
       type: Number,

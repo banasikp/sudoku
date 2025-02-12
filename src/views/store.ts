@@ -296,17 +296,15 @@ export const useSudokuStore = defineStore('sudoku', () => {
   const getMapSize = () => mapSize;
   const getItems = () => items;
 
+  const getPossibleValues = (items: TileItem[]) => {
+    const values = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const itemValues = items.map(i => i.value).filter(v => v != null);
+    return values.filter(v => !itemValues.includes(v));
+  }
   
-  const fillWherePossible = () => {
-    console.log(items);
+  const fillWherePossible = () => {    
     const emptyItems = items.filter(item => item.value == null);
-    function getPossibleValues(items: TileItem[]) {
-      const values = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-      const itemValues = items.map(i => i.value).filter(v => v != null);
-      return values.filter(v => !itemValues.includes(v));
-    }
-
-    //step 1 - find all possible values for each empty item
+        
     emptyItems.forEach((item) => {
       const itemsToCheck = items.filter(i => i.x == item.x || i.y == item.y || i.z == item.z);
       item.possibleValues = getPossibleValues(itemsToCheck);
@@ -315,13 +313,55 @@ export const useSudokuStore = defineStore('sudoku', () => {
         item.value = item.possibleValues[0];
         item.possibleValues = [item.possibleValues[0]];
       }
+    })    
+  }
+  const inductZPossible = () => {    
+    const emptyItems = items.filter(item => item.value == null);
+    emptyItems.forEach((item) => {
+      const itemsToCheck = items.filter(i => i.x == item.x || i.y == item.y || i.z == item.z);
+      item.possibleValues = getPossibleValues(itemsToCheck);      
     })
-
-    //step 2 - induction of possible values
+    
     for (let i = 0; i < 9; i++) {
-      const allZItems = items.filter(item => item.z == i);
+      const allZItems = items.filter(item => item.z == i);      
       for (let numberToCheck = 1; numberToCheck <= 9; numberToCheck++) {
         const itemsWithNumber = allZItems.filter(item => item.possibleValues.includes(numberToCheck));
+        if (itemsWithNumber.length == 1) {
+          itemsWithNumber[0].value = numberToCheck;
+          itemsWithNumber[0].possibleValues = [numberToCheck];
+        }
+      }
+    }    
+  }
+  const inductXPossible = () => {    
+    const emptyItems = items.filter(item => item.value == null);
+    emptyItems.forEach((item) => {
+      const itemsToCheck = items.filter(i => i.x == item.x || i.y == item.y || i.z == item.z);
+      item.possibleValues = getPossibleValues(itemsToCheck);      
+    })
+    
+    for (let i = 0; i < 9; i++) {
+      const allXItems = items.filter(item => item.x == i);      
+      for (let numberToCheck = 1; numberToCheck <= 9; numberToCheck++) {
+        const itemsWithNumber = allXItems.filter(item => item.possibleValues.includes(numberToCheck));
+        if (itemsWithNumber.length == 1) {
+          itemsWithNumber[0].value = numberToCheck;
+          itemsWithNumber[0].possibleValues = [numberToCheck];
+        }
+      }
+    }
+  }
+  const inductYPossible = () => {
+    const emptyItems = items.filter(item => item.value == null);
+    emptyItems.forEach((item) => {
+      const itemsToCheck = items.filter(i => i.x == item.x || i.y == item.y || i.z == item.z);
+      item.possibleValues = getPossibleValues(itemsToCheck);      
+    })
+    
+    for (let i = 0; i < 9; i++) {
+      const allYItems = items.filter(item => item.z == i);      
+      for (let numberToCheck = 1; numberToCheck <= 9; numberToCheck++) {
+        const itemsWithNumber = allYItems.filter(item => item.possibleValues.includes(numberToCheck));
         if (itemsWithNumber.length == 1) {
           itemsWithNumber[0].value = numberToCheck;
           itemsWithNumber[0].possibleValues = [numberToCheck];
@@ -336,6 +376,9 @@ export const useSudokuStore = defineStore('sudoku', () => {
     while (lastItemsToCheckAmount > 0 && lastItemsToCheckAmount != items.filter(i => i.value == null).length) {
       lastItemsToCheckAmount = items.filter(i => i.value == null).length;
       fillWherePossible();
+      inductZPossible();
+      inductXPossible();
+      inductYPossible();
     }
     setInProgress(false);
   }  
@@ -365,6 +408,9 @@ export const useSudokuStore = defineStore('sudoku', () => {
     getItems,
     getMapSize,
     fillWherePossible,
+    inductZPossible,
+    inductXPossible,
+    inductYPossible,
     solve,
     getMode,
     toggleEdit,

@@ -20,6 +20,15 @@
   const fill = () => {
     store.fillWherePossible();
   }
+  const inductZ = () => {
+    store.inductZPossible();
+  }
+  const inductX = () => {
+    store.inductXPossible();
+  }
+  const inductY = () => {
+    store.inductYPossible();
+  }
   const solve = () => {
     store.solve();
   }
@@ -50,15 +59,21 @@
     </div>
 
     <div class="controls">
-      <button class="btn" @click="fill">Fill where possible</button>
-      <br />
-      <button class="btn" @click="solve">Solve</button>
-      <br /><br />
-      <button class="btn" @click="reset">Reset to default map</button>
-      <br />
-      <button class="btn" @click="clear">Clear map</button>
-      <br />
-      <button class="btn" @click="toggleEdit">Edit/Play</button>
+        <button class="btn" @click="fill">Fill where possible</button>
+        <br />
+        <button class="btn" @click="inductZ">Induct from group</button>
+        <br />
+        <button class="btn" @click="inductX">Induct from row</button>
+        <br />
+        <button class="btn" @click="inductY">Induct from column</button>
+        <br />
+        <button class="btn" @click="solve">Solve</button>
+        <br /><br />
+        <button class="btn" @click="reset">Reset to default map</button>
+        <br />
+        <button class="btn" @click="clear">Clear map</button>
+        <br />
+        <button class="btn" @click="toggleEdit">Edit/Play</button>
     </div>
   </div>
 </template>
@@ -75,7 +90,7 @@
   }
 
     #sudoku-container .controls .btn {
-      widht: 200px;
+      width: 200px;
       height: 50px;
     }
 
@@ -86,11 +101,11 @@
     width: v-bind(mapSize);
   }
 
-    #sudoku-container .map ::deep(div) {
+    #sudoku-container .map >>> .border-right {
       border-right: 5px solid #fff !important
     }
 
-    #sudoku-container .map ::deep(.border-bottom) {
+    #sudoku-container .map >>> .border-bottom {
       border-bottom: 5px solid #fff !important
     }
 </style>
