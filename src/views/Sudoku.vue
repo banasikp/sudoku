@@ -1,14 +1,14 @@
 <script setup lang="ts">
   import tile from '../components/tile.vue';
-  import { useSudokuStore } from './store';
+  import { useSudokuStore } from '@/stores/store';
   import { TileItem } from '@/models/tileItem';
 
   const size: number = 9;
   const tileSize: number = 70;
-  const mapSize: string = (size * tileSize) + "px";
+  const mapSize: string = (size * (tileSize+5)) + "px";
 
   const store = useSudokuStore();
-  store.initialize(size, 2);
+  store.initialize(2);
   const items = store.getItems();
 
   const calculateCustomClass = (item: TileItem) => {
@@ -102,10 +102,10 @@
   }
 
     #sudoku-container .map >>> .border-right {
-      border-right: 5px solid #fff !important
+      border-right: 5px solid #000 !important
     }
 
     #sudoku-container .map >>> .border-bottom {
-      border-bottom: 5px solid #fff !important
+      border-bottom: 5px solid #000 !important
     }
 </style>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { defineProps, computed, ref, watch } from 'vue';
   import { TileMode } from '@/models/tileMode.ts';
-  import { useSudokuStore } from '@/views/store';
+  import { useSudokuStore } from '@/stores/store.ts';
 
   const props = defineProps({
     x: {
@@ -31,7 +31,6 @@
   });
 
   const tileSize: string = "70px";
-
   const classes = computed(() => "tile" + " " + props.customClass);
 
   const valueInput = ref(props.value);
@@ -41,6 +40,9 @@
       newValue = null;
     }
     else{
+        if(newValue.length > 1){
+            newValue = newValue.slice(-1);
+        }
         newValue = parseInt(newValue);
     }
     store.updateTile(props.x, props.y, props.z, newValue);
@@ -62,13 +64,13 @@
 </template>
 
 <style scoped>
-  .tile {
-    background-color: #000;
-    border: 1px solid #fff;
-    color: #fff;
+  .tile {    
+    border: 1px solid #000;
+    color: #000;
     font-size: 35px;
     width: v-bind(tileSize);
     height: v-bind(tileSize);
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -77,7 +79,7 @@
   .tile--input {
     width: 27px;
     font-size: 35px;
-    background-color: #000;
+    background-color: #fff;
     color: #3482FF
   }
 </style>

@@ -3,16 +3,15 @@ import { ref, reactive } from "vue"
 import type { TileItem } from "@/models/tileItem.ts"
 import { TileMode } from "@/models/tileMode.ts"
 
-export const useSudokuStore = defineStore('sudoku', () => {
-  const mapSize = ref<number>(9);
+export const useSudokuStore = defineStore('sudoku', () => {  
   const items = reactive<TileItem[]>([])
   const mode = ref<TileMode>(TileMode.Play);
   const inProgress = ref<boolean>(false);
 
-  const initialize = (size: number, mapNumber: number) => {
+  const initialize = (mapNumber: number) => {
     items.splice(0);
 
-    if (size == 9 && mapNumber == 0) {
+    if (mapNumber == 0) {
       items.push({ x: 0, y: 0, z: 0, value: null, possibleValues: [] })
       items.push({ x: 0, y: 1, z: 0, value: null, possibleValues: [] })
       items.push({ x: 0, y: 2, z: 0, value: null, possibleValues: [] })
@@ -104,7 +103,7 @@ export const useSudokuStore = defineStore('sudoku', () => {
       items.push({ x: 8, y: 8, z: 8, value: null, possibleValues: [] })
     }
 
-    if (size == 9 && mapNumber == 1) {
+    if (mapNumber == 1) {
       items.push({ x: 0, y: 0, z: 0, possibleValues: [], value: null })
       items.push({ x: 0, y: 1, z: 0, possibleValues: [], value: null })
       items.push({ x: 0, y: 2, z: 0, possibleValues: [], value: 1 })
@@ -196,7 +195,7 @@ export const useSudokuStore = defineStore('sudoku', () => {
       items.push({ x: 8, y: 8, z: 8, possibleValues: [], value: null })
     }
 
-    if (size == 9 && mapNumber == 2) {
+    if (mapNumber == 2) {
       items.push({ x: 0, y: 0, z: 0, value: 6, possibleValues: [] })
       items.push({ x: 0, y: 1, z: 0, value: 8, possibleValues: [] })
       items.push({ x: 0, y: 2, z: 0, value: null, possibleValues: [] })
@@ -293,7 +292,7 @@ export const useSudokuStore = defineStore('sudoku', () => {
         item.possibleValues = [item.value];
     })
   };
-  const getMapSize = () => mapSize;
+  
   const getItems = () => items;
 
   const getPossibleValues = (items: TileItem[]) => {
@@ -405,8 +404,7 @@ export const useSudokuStore = defineStore('sudoku', () => {
 
   return {
     initialize,
-    getItems,
-    getMapSize,
+    getItems,    
     fillWherePossible,
     inductZPossible,
     inductXPossible,
