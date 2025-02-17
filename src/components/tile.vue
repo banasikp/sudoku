@@ -2,6 +2,7 @@
   import { defineProps, computed, ref, watch } from 'vue';
   import { TileMode } from '@/models/tileMode.ts';
   import { useSudokuStore } from '@/stores/store.ts';
+  import { useVuelidate } from '@vuelidate/core'
 
   const props = defineProps({
     x: {
@@ -34,6 +35,18 @@
   const classes = computed(() => "tile" + " " + props.customClass);
 
   const valueInput = ref(props.value);
+  const inputValidationRules = computed(() => {
+    return {
+      value: {
+        required,
+        numeric,
+        minValue: 1,
+        maxValue: 9
+      }
+    }
+  });
+  const v& = useVuelidate(inputValidationRules, valueInput);
+
   watch(valueInput, (newValue, oldValue) => {
     const store = useSudokuStore();
     if (newValue == '') {
@@ -59,7 +72,7 @@
   </div>
 
   <div v-show="mode == TileMode.Edit" :class="classes">
-    <input class="tile--input" type="number" v-model="valueInput" />
+    <input class="tile--input" type="number" v-model="v$.valueInput.$model" />
   </div>
 </template>
 
