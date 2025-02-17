@@ -59,7 +59,7 @@
   </div>
 
   <div v-show="mode == TileMode.Edit" :class="classes">
-    <input class="tile--input" type="text" v-model="valueInput" />
+    <input class="tile--input" type="number" v-model="valueInput" />
   </div>
 </template>
 
