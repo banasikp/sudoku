@@ -33,7 +33,7 @@
     store.solve();
   }
   const reset = () => {
-    store.initialize(size, 1);
+    store.initialize(1);
   }
 
   const clear = () => {
